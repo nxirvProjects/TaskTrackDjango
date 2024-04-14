@@ -19,8 +19,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("kanban/", views.kanban, name="kanban"),
+    path("<str:label_name>/kanban/", views.kanban, name="kanban"),
+    path("all_tasks/", views.view_all_tasks, name="view all tasks"),
     path("add_task/", views.add_task, name="add task"),
-    path("view_label/", views.view_labels, name="view label"),
-    path("", views.home, name ="home"),
+    path("view_labels/", views.view_labels, name="view label"),
+    path("add_label/", views.add_labels, name="add label"),
+    path("delete_label/<str:label_name>/", views.delete_label, name="delete label"),
+    path("delete_task/<str:task_name>/", views.delete_task, name="delete task"),
+    path("edit_task/<str:task_name>/", views.edit_task, name="edit task"),
+    path("", views.home, name="home"),
+    path("register/", views.register, name="register")
 ]

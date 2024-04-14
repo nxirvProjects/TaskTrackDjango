@@ -14,6 +14,7 @@ class Label(models.Model):
         ("#FFFACD", "Lemon Chiffon"),
         ("#F0FFF0", "Honeydew"),
         ("#FFA07A", "Peach")])
+    user = models.CharField(max_length=255, default='blank')
 
 
 # Task db model
@@ -22,5 +23,6 @@ class Task(models.Model):
     task_description = models.CharField(max_length=500)
     task_status = models.BooleanField()
     task_label = models.ForeignKey(Label, on_delete=models.CASCADE)
-
+    user = models.CharField(max_length=255, default='blank')
+    deadline = models.DateTimeField(null=True, blank=True)
 

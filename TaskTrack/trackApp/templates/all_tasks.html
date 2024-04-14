@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>All Tasks</title>
     <style>
         .container2 {
             width: 250px;
@@ -118,9 +118,9 @@
 </head>
 <body>
     <div class="container2">
-    <h2>Tasks</h2>
-    <hr style="height:2px;border-width:0;color:gray;background-color: #d3d3d3">
-    <form action="/{{label_id}}/kanban/" method="POST" id="save-form">
+        <h2>All Tasks</h2>
+        <hr style="height:2px;border-width:0;color:gray;background-color: #d3d3d3">
+        <form action="/all_tasks/" method="POST" id="save-form">
             {% csrf_token %}
             <ul>
                 {% for task in tasks %}
@@ -140,7 +140,7 @@
             </ul>
             <button type="submit" class="save-button">Save</button>
         </form>
-</div>
+    </div>
 
     <div class="edit-form">
         <h2 id="title"></h2>
@@ -149,19 +149,19 @@
     </div>
     <div id="popup" class="popup"></div>
 
-<script>
-    // JavaScript function to show task description
-    function showDescription(description, title) {
-        // Get the description element
-        var descriptionElement = document.getElementById('description');
-        var titleElement = document.getElementById('title');
+    <script>
+        // JavaScript function to show task description
+        function showDescription(description, title) {
+            // Get the description element
+            var descriptionElement = document.getElementById('description');
+            var titleElement = document.getElementById('title');
 
-        console.log(titleElement);
-        // Set the task description
-        descriptionElement.textContent = description;
-        titleElement.textContent = title;
-    }
-</script>
+            console.log(titleElement);
+            // Set the task description
+            descriptionElement.textContent = description;
+            titleElement.textContent = title;
+        }
+    </script>
 </body>
 </html>
 {% endblock %}

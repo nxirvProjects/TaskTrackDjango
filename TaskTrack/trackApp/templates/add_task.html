@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add task</title>
+    <title>Add Task</title>
     <style>
         .container3 {
             width: 250px;
@@ -24,16 +24,22 @@
   <div class="container3">
         <h2>Add Task</h2>
       <form method="post">
-        {% csrf_token %}
-        <label for="task_name">Task Name:</label><br>
-        <input type="text" id="task_name" name="task_name"><br>
-        <label for="task_description">Task Description:</label><br>
-        <textarea id="task_description" name="task_description"></textarea><br>
-        <label for="task_label">Task Label:</label><br>
-        <input type="text" id="task_label" name="task_label"><br><br>
-        <input type="submit" value="Submit">
-          {{Message}}
-      </form>
+          {% csrf_token %}
+          <label for="task_name">Task Name*:</label><br>
+          <input type="text" id="task_name" name="task_name"><br>
+          <label for="task_description">Task Description:</label><br>
+          <textarea id="task_description" name="task_description"></textarea><br>
+          <label for="task_label">Task Label*:</label><br>
+          <select id="task_label" name="task_label" style="width: 200px; padding: 5px;">
+            {% for label in labels %}
+            <option value="{{ label.id }}">{{ label.label_name }}</option>
+            {% endfor %}
+              <label for="deadline">Deadline*:</label><br>
+                <input type="datetime-local" id="deadline" name="task_deadline"><br><br>
+          </select><br><br>
+          <input type="submit" value="Submit">
+          {{ Message }}
+        </form>
   </div>
 </body>
 </html>
