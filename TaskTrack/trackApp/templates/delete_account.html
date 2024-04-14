@@ -1,0 +1,28 @@
+{% extends 'home.html' %}
+{% block content %}
+
+<style>
+    .container2 {
+            width: 1000px;
+            background-color: #ffffff; /* White sidebar */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Drop shadow */
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 300px;
+            height: 75vh;
+        }
+</style>
+
+<div class="container2">
+    <h3>Delete Account</h3>
+    <p>Warning: Deleting your account is irreversible. All your data will be permanently removed.</p>
+    <form action="{% url 'delete_account' %}" method="post" onsubmit="return confirmDelete();">
+        {% csrf_token %}
+        <button type="submit">Delete Account</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -67,6 +67,46 @@
         .dropdown:hover .dropdown-content {
           display: block;
         }
+
+        .container7 {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-left: 500px;
+            margin-top: 30px;
+            height: 90vh;
+            width: 700px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .export-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -91,21 +131,40 @@
                   </div>
                 </div>
                 <a href="#"><i class="fas fa-file" style="color: #74b453;"></i> Syllabus</a>
-                <div class="dropdown">
-                  <a href="#"><i class="fas fa-cog" style="color: #74b453;"></i> Settings <i class="fas fa-caret-down"></i></a>
-                  <div class="dropdown-content">
-                    <a href="/change_password">Change Password </a>
-                    <a href="/delete_account">Delete Account</a>
-                </div>
-              </div>
-
+                <a href="#"><i class="fas fa-cog" style="color: #74b453;"></i> Settings</a>
                 <a href="/logout" style="position: absolute; bottom: 0;"><i class="fas fa-outdent" style="color: #74b453;"></i> Logout</a>
             </div>
         </div>
-        <div class="content">
-            {% block content %}
-            {% endblock %}
-        </div>
+        <div class="container7">
+            <form method="post" action="{% url 'home' %}">
+                {% csrf_token %}
+        <h2>Welcome {{user.username}} to TaskTrack!</h2>
+            <h2>Today's Tasks</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Status</th>
+                    <th>Deadline</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in events %}
+                <tr>
+                    <td>{{ task.0 }}</td>  <!-- Task Name -->
+                    {% if task.1 %}
+                        <td>Completed</td>  <!-- Status -->
+                    {% else %}
+                        <td>Pending...</td>
+                    {% endif %}
+                    <td>{{ task.2|date:"Y-m-d H:i:s" }}</td>  <!-- Deadline -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+            <button type="submit" class="export-button">Export to Calendar</button>
+            </form>
+    </div>
     </div>
 </body>
 </html>

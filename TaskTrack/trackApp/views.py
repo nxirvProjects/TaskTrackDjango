@@ -1,8 +1,13 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from .models import Task, Label
-from .forms import AddTaskForm, AddLabelForm, EditTaskForm, RegisterForm
+from .forms import AddTaskForm, AddLabelForm, EditTaskForm, RegisterForm, EditLabelForm
 from django.contrib.auth.decorators import login_required
-
+from django.utils import timezone
+from django.http import HttpResponse
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+import icalendar
+import datetime
 
 # Create your views here.
 def register(response):
@@ -18,7 +23,46 @@ def register(response):
 
 @login_required(redirect_field_name="/accounts/login/")
 def home(response):
-    return render(response, "home.html")
+    all_tasks = Task.objects.filter(user=response.user).values()
+    list_tasks = [task for task in all_tasks]
+    today = timezone.localdate()
+    if response.method == "POST":
+        cal = icalendar.Calendar()
+        cal.add('prodid', '-//Task Track//Track App//EN')
+        cal.add('version', '2.0')
+
+        for task in list_tasks:
+            if task['deadline'] is None:
+                deadline = datetime.datetime.combine(datetime.date.today(), datetime.time())
+            else:
+                deadline = task['deadline']
+
+            event = icalendar.Event()
+            event.add('summary', task['task_name'])
+            event.add('description', task['task_description'])
+            event.add('dtstart', deadline)
+            event.add('dtend', deadline)
+            event.add('status', 'COMPLETED' if task['task_status'] else 'IN-PROCESS')
+            cal.add_component(event)
+
+            # Generate .ics content
+        ics_content = cal.to_ical()
+
+        # Prepare response
+        response = HttpResponse(ics_content, content_type='text/calendar')
+        response['Content-Disposition'] = 'attachment; filename="tasks.ics"'
+        return response
+
+
+    formatted_tasks = []
+    for task in list_tasks:
+        # Check if the task's deadline is today
+        task_deadline_date = task["deadline"].date() if task["deadline"] else None
+        if task_deadline_date == today:
+            # Add the task to the formatted tasks list
+            formatted_tasks.append([task["task_name"], task["task_status"], task["deadline"]])
+
+    return render(response, "new_home.html", {"events": formatted_tasks})
 
 
 @login_required(redirect_field_name="/accounts/login/")
@@ -175,7 +219,6 @@ def delete_task(response, task_name):
 @login_required(redirect_field_name="/accounts/login/")
 def edit_task(response, task_name):
     if response.method == 'POST':
-        print(task_name)
         form = EditTaskForm(response.POST)  # Bind POST data to the form
         if form.is_valid():
             task_name_new = form.cleaned_data['task_name']
@@ -202,3 +245,53 @@ def edit_task(response, task_name):
         return render(response, 'edit_task.html', {'Message': '', 'form': form, 'labels': labels, 'name': name,
                                                'desc': desc})
 
+def edit_label(response, label_name):
+    if response.method == 'POST':
+        form = EditLabelForm(response.POST)  # Bind POST data to the form
+        if form.is_valid():
+            label_name_new = form.cleaned_data['label_name']
+            label_colour = form.cleaned_data['label_colour']
+
+
+            Label.objects.filter(pk=label_name).update(label_name=label_name_new,
+                                                     label_colour=label_colour)
+
+            return render(response, 'edit_label.html', {'Message': 'Label Edited!'})
+    else:
+        form = EditLabelForm()  # Create an instance of your form
+
+        return render(response, 'edit_label.html', {'Message': '', 'form': form})
+
+
+#Delete Account
+@login_required(redirect_field_name="/accounts/login/")
+def delete_user(response):
+    """
+    Allows the authenticated user to delete their own account.
+    """
+    user = response.user
+    if response.method == 'POST':
+        Label.objects.filter(user=response.user).delete()
+        user.delete()
+        return redirect('/')  # Redirect to a confirmation page or the home page
+    return render(response, 'delete_account.html')  # A page that confirms the user's intent to delete the account
+
+#Change password
+@login_required
+def change_password(request):
+    message = None  # Message to display on success
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important to keep the user logged in after changing the password
+            message = "Your password has been successfully changed."
+            form = PasswordChangeForm(request.user)  # Optionally reset the form or redirect as needed
+        else:
+            message = "Please correct the error below."
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {
+        'form': form,
+        'message': message
+    })
