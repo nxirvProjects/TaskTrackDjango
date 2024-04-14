@@ -94,6 +94,26 @@
             left: 1000px;
             height: 75vh;
         }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -101,43 +121,41 @@
         <h2>Label</h2>
         <hr style="height:2px;border-width:0;color:gray;background-color: #d3d3d3">
         <ul>
+            {% for task in tasks %}
             <li>
-                <input type="checkbox" class="checkbox"><div class="circle circle-red"></div><span class="task-name">Task 1</span>
-            </li>
-            <li>
+                {% if task.task_status %}
+                <input type="checkbox" class="checkbox" checked>
+                {% else %}
                 <input type="checkbox" class="checkbox">
-                <div class="circle circle-yellow"></div>
-                <span class="task-name">Task 2</span>
+                {% endif %}
+                <div class="circle" style="background-color: {{ task.task_label }}; cursor: pointer;" onclick='showDescription("{{ task.task_description }}", "{{ task.task_name }}")'></div>
+                <!-- Add onclick event to show description -->
+                <span class="task-name" onclick='showDescription("{{ task.task_description }}", "{{ task.task_name }}")' style="cursor: pointer;" >{{ task.task_name }}</span>
             </li>
-            <li>
-                <input type="checkbox" class="checkbox">
-                <div class="circle circle-green"></div>
-                <span class="task-name">Task 3</span>
-            </li>
-            <li>
-                <input type="checkbox" class="checkbox">
-                <div class="circle circle-green"></div>
-                <span class="task-name">Task 3</span>
-            </li>
-            <li>
-                <input type="checkbox" class="checkbox">
-                <div class="circle circle-green"></div>
-                <span class="task-name">Task 3</span>
-            </li>
-            <li>
-                <input type="checkbox" class="checkbox">
-                <div class="circle circle-green"></div>
-                <span class="task-name">Task 3</span>
-            </li>
+            {% endfor %}
         </ul>
-        <button class="save-button">Save</button>
     </div>
 
     <div class="edit-form">
-        <h2>Edit Tasks</h2>
+        <h2 id="title"></h2>
         <hr style="height:2px;border-width:0;color:gray;background-color: #d3d3d3">
+        <p id="description"></p> <!-- Placeholder for task description -->
     </div>
+    <div id="popup" class="popup"></div>
 
+<script>
+    // JavaScript function to show task description
+    function showDescription(description, title) {
+        // Get the description element
+        var descriptionElement = document.getElementById('description');
+        var titleElement = document.getElementById('title');
+
+        console.log(titleElement);
+        // Set the task description
+        descriptionElement.textContent = description;
+        titleElement.textContent = title;
+    }
+</script>
 </body>
 </html>
 {% endblock %}

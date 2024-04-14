@@ -19,6 +19,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("kanban/", views.kanban, name = "kanban"),
+    path("kanban/", views.kanban, name="kanban"),
+    path("add_task/", views.add_task, name="add task"),
+    path("view_label/", views.view_labels, name="view label"),
     path("", views.home, name ="home"),
 ]

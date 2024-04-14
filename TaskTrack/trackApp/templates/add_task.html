@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% extends 'home.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add task</title>
+    <style>
+        .container3 {
+            width: 250px;
+            background-color: #ffffff; /* White sidebar */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Drop shadow */
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 450px;
+            height: 75vh;
+        }
+    </style>
+</head>
+<body>
+  <div class="container3">
+        <h2>Add Task</h2>
+      <form method="post">
+        {% csrf_token %}
+        <label for="task_name">Task Name:</label><br>
+        <input type="text" id="task_name" name="task_name"><br>
+        <label for="task_description">Task Description:</label><br>
+        <textarea id="task_description" name="task_description"></textarea><br>
+        <label for="task_label">Task Label:</label><br>
+        <input type="text" id="task_label" name="task_label"><br><br>
+        <input type="submit" value="Submit">
+          {{Message}}
+      </form>
+  </div>
+</body>
+</html>
+{% endblock %}
