@@ -1,3 +1,143 @@
-<h1>
-    bla
-</h1>
+<!DOCTYPE html>
+{% extends 'home.html' %}
+{% block content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        .container2 {
+            width: 250px;
+            background-color: #ffffff; /* White sidebar */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Drop shadow */
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 300px;
+            height: 75vh;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: inline-flex;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            margin-right: 10px;
+        }
+        .circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .circle-red {
+            background-color: blue;
+        }
+        .circle-yellow {
+            background-color: green;
+        }
+        .circle-green {
+            background-color: yellow;
+        }
+        .task-name {
+            margin-top: 8px;
+            flex: 1;
+        }
+        .save-button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: bottom;
+        }
+        .save-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .save-button:hover {
+            background-color: #0056b3;
+        }
+
+        .edit-form {
+            width: 750px;
+            background-color: #ffffff; /* White sidebar */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Drop shadow */
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1000px;
+            height: 75vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="container2">
+        <h2>Label</h2>
+        <hr style="height:2px;border-width:0;color:gray;background-color: #d3d3d3">
+        <ul>
+            <li>
+                <input type="checkbox" class="checkbox"><div class="circle circle-red"></div><span class="task-name">Task 1</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checkbox">
+                <div class="circle circle-yellow"></div>
+                <span class="task-name">Task 2</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checkbox">
+                <div class="circle circle-green"></div>
+                <span class="task-name">Task 3</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checkbox">
+                <div class="circle circle-green"></div>
+                <span class="task-name">Task 3</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checkbox">
+                <div class="circle circle-green"></div>
+                <span class="task-name">Task 3</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checkbox">
+                <div class="circle circle-green"></div>
+                <span class="task-name">Task 3</span>
+            </li>
+        </ul>
+        <button class="save-button">Save</button>
+    </div>
+
+    <div class="edit-form">
+        <h2>Edit Tasks</h2>
+        <hr style="height:2px;border-width:0;color:gray;background-color: #d3d3d3">
+    </div>
+
+</body>
+</html>
+{% endblock %}
