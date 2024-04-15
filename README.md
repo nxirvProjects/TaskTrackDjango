@@ -74,6 +74,6 @@ This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE
   - [LinkedIn](https://www.linkedin.com/in/sreebommisetty/)
   - [GitHub](https://github.com/person3)
 
-  - **Kashvi Asokan**
+- **Kashvi Asokan**
   - [LinkedIn]( https://www.linkedin.com/in/kashvi-asokan/)
   - [GitHub](https://github.com/eisedial)
