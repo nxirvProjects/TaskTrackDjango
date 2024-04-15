@@ -61,13 +61,11 @@ def home(response):
         return response
 
 
-    print(list_tasks)
     formatted_tasks = []
     for task in list_tasks:
         # Check if the task's deadline is today
         task_deadline_date = task["deadline"].date() if task["deadline"] else None
-        print(task_deadline_date)
-        print(today)
+
         if task_deadline_date == today:
             # Add the task to the formatted tasks list
             formatted_tasks.append([task["task_name"], task["task_status"], task["deadline"]])
