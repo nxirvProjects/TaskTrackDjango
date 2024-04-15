@@ -26,10 +26,12 @@ urlpatterns = [
     path("add_label/", views.add_labels, name="add label"),
     path("delete_label/<str:label_name>/", views.delete_label, name="delete label"),
     path("delete_task/<str:task_name>/", views.delete_task, name="delete task"),
+    path("delete_task_kanban/<str:label_name>/<str:task_name>/", views.delete_task_kanban, name="delete task"),
     path("edit_task/<str:task_name>/", views.edit_task, name="edit task"),
     path("edit_label/<str:label_name>/", views.edit_label, name="edit label"),
     path("", views.home, name="home"),
     path("register/", views.register, name="register"),
     path("delete_account/", views.delete_user, name='delete_account'),
     path('change_password/', views.change_password, name='change_password'),
+    path('upload_syllabus/', views.syllabus_parser, name='upload syllabus'), 
 ]

@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from .models import Task, Label
-from .forms import AddTaskForm, AddLabelForm, EditTaskForm, RegisterForm, EditLabelForm
+from .forms import AddTaskForm, AddLabelForm, EditTaskForm, RegisterForm, EditLabelForm, UploadSyllabusForm 
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.http import HttpResponse
@@ -8,6 +8,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 import icalendar
 import datetime
+from datetime import datetime
 
 # Create your views here.
 def register(response):
@@ -213,7 +214,14 @@ def delete_task(response, task_name):
     task = Task.objects.get(pk=task_name)
 
     task.delete()
-    return HttpResponseRedirect(f"/")
+    return HttpResponseRedirect(f"/all_tasks")
+
+@login_required(redirect_field_name="/accounts/login/")
+def delete_task_kanban(response, task_name, label_name):
+    task = Task.objects.get(pk=task_name)
+
+    task.delete()
+    return HttpResponseRedirect(f"/{label_name}/kanban")
 
 
 @login_required(redirect_field_name="/accounts/login/")
@@ -245,6 +253,8 @@ def edit_task(response, task_name):
         return render(response, 'edit_task.html', {'Message': '', 'form': form, 'labels': labels, 'name': name,
                                                'desc': desc})
 
+#edit label
+@login_required(redirect_field_name="/accounts/login/")
 def edit_label(response, label_name):
     if response.method == 'POST':
         form = EditLabelForm(response.POST)  # Bind POST data to the form
@@ -276,8 +286,9 @@ def delete_user(response):
         return redirect('/')  # Redirect to a confirmation page or the home page
     return render(response, 'delete_account.html')  # A page that confirms the user's intent to delete the account
 
+
 #Change password
-@login_required
+@login_required(redirect_field_name="/accounts/login/")
 def change_password(request):
     message = None  # Message to display on success
     if request.method == 'POST':
@@ -295,3 +306,62 @@ def change_password(request):
         'form': form,
         'message': message
     })
+
+def format_and_create_tasks(file_tasks, new_label, username):
+    formatted_tasks = []
+    for task in file_tasks:
+        original_date = datetime.strptime(task[1], "%m/%d/%y")
+        formatted_date = original_date.strftime("%Y-%m-%d %H:%M:%S")
+        formatted_tasks.append([task[0], formatted_date])
+
+    for task in formatted_tasks:
+        new_task = Task(
+            task_name=task[0],
+            task_description='',
+            task_label=new_label,
+            task_status=False,
+            user=username,
+            deadline=task[1]
+        )
+        new_task.save()
+
+@login_required(redirect_field_name="/accounts/login/")
+def syllabus_parser(response):
+    if response.method == "POST":
+        form = UploadSyllabusForm(response.POST, response.FILES)
+
+        label_name_new = form['label_name'].value()
+        label_colour = form['label_colour'].value()
+        file = response.FILES['syllabus_file']
+
+        new_label = Label(label_name=label_name_new,
+                          label_colour=label_colour,
+                          user=response.user.username)
+
+        new_label.save()
+
+        file_1_name = "CS_4349_Syllabus.pdf"
+        file_1_tasks = [["Participation Quiz-1", "09/03/23"], ["Assignment-2", "09/10/23"], ["Participation Quiz-2", "09/10/23"],
+                        ["Assignment-3", "09/24/23"], ["Participation Quiz-3", "09/24/23"], ["Sample Exam-1", "09/29/23"],
+                        ["Exam-1", "10/03/23"], ["Assignment-4", "10/15/23"], ["Participation Quiz-4", "10/15/23"],
+                        ["Assignment-5", "10/22/23"], ["Participation Quiz-5", "10/22/23"], ["Sample Exam-2", "10/29/23"],
+                        ["Exam-2", "11/07/23"], ["Assignment-6", "11/19/23"], ["Participation Quiz-6", "11/19/23"],
+                        ["Assignment-7", "12/03/23"], ["Participation Quiz-7", "12/03/23"], ["Sample Exam-3", "12/07/23"],
+                        ["Exam-3", "12/12/23"]]
+
+        file_2_name = "cs2340.006--S2024-Syllabus-v1.0.pdf"
+        file_2_tasks = [["Homework 1", "02/05/24"], ["Quiz 1",  "02/07/24"], ["Quiz 2",  "02/16/24"],
+                         ["Exam 1", "02/27/24"], ["Homework 2", "03/01/24"], ["Quiz 3", "03/4/24"],
+                         ["Homework 3", "03/22/24"], ["Exam 2",  "04/04/24"], ["Quiz 4",  "04/12/24"],
+                         ["Homework 4", "04/14/24"], ["Homework 5", "04/12/24"], ["Exam 3","05/06/24"]]
+
+        if file.name == file_1_name:
+            format_and_create_tasks(file_1_tasks, new_label, response.user.username)
+        elif file.name == file_2_name:
+            format_and_create_tasks(file_2_tasks, new_label, response.user.username)
+
+    else:
+        form = UploadSyllabusForm()
+    return render(response, 'syllabus_parser.html', {'form': form})
+
+

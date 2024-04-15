@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% extends 'home.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Syllabus Parser</title>
+    <style>
+        /* Style for container */
+        .form-container {
+            margin-left: 300px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        /* Style for file input */
+        .custom-file-input {
+            color: transparent;
+        }
+
+        .custom-file-input::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+
+        .custom-file-input::before {
+            content: 'Select File';
+            display: inline-block;
+            background: linear-gradient(top, #f9f9f9, #e3e3e3);
+            border: 1px solid #999;
+            border-radius: 3px;
+            padding: 5px 8px;
+            outline: none;
+            white-space: nowrap;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .custom-file-input:hover::before {
+            border-color: black;
+        }
+
+        .custom-file-input:active::before {
+            background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+        }
+
+        .file-selected::before {
+            content: 'File Selected';
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="id_label_name">Label Name:</label><br>
+            <input type="text" id="label_name" name="label_name" placeholder="{{name}}"><br>
+
+            <label for="id_label_colour">Label Colour:</label><br>
+            <select id="label_colour" name="label_colour">
+                <option value="#E91E63" style="background-color: #E91E63;">Deep Pink</option>
+                <option value="#9C27B0" style="background-color: #9C27B0;">Purple</option>
+                <option value="#3F51B5" style="background-color: #3F51B5;">Indigo</option>
+                <option value="#03A9F4" style="background-color: #03A9F4;">Light Blue</option>
+                <option value="#00BCD4" style="background-color: #00BCD4;">Cyan</option>
+                <option value="#4CAF50" style="background-color: #4CAF50;">Green</option>
+                <option value="#CDDC39" style="background-color: #CDDC39;">Lime</option>
+                <option value="#FFEB3B" style="background-color: #FFEB3B;">Yellow</option>
+                <option value="#FF9800" style="background-color: #FF9800;">Orange</option>
+                <option value="#795548" style="background-color: #795548;">Brown</option>
+            </select><br>
+
+            <label for="id_file">Upload File:</label><br>
+            <input type="file" id="file" name="syllabus_file"><br>
+
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

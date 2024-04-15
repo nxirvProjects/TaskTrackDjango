@@ -19,6 +19,55 @@
             left: 450px;
             height: 75vh;
         }
+
+        h1 {
+            color: #333;
+            font-size: 1.5em; /* Larger font-size for title */
+            text-align: left; /* Aligning the title to the left */
+            margin-bottom: 1em;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column; /* Stack the form items vertically */
+        }
+        
+        label {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        input[type=text], select {
+            padding: 10px;
+            margin-bottom: 20px; /* Adds space below each input */
+            border: 1px solid #ddd; /* Subtle border color */
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensures the padding doesn't affect the overall width */
+        }
+        
+        button {
+            background-color: #4caf50; /* Button color matching the theme */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Smooth transition for button hover effect */
+        }
+        
+        button:hover {
+            background-color: #45a049; /* Slightly darker green on hover */
+        }
+        
+        .message {
+            color: #388e3c; /* Green text, assuming this is for success messages */
+            margin-bottom: 20px;
+        }
+        
+        .error-message {
+            color: #f44336; /* Red text, for error messages */
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -34,16 +83,16 @@
 
             <label for="id_label_colour">Label Colour:</label><br>
             <select id="label_colour" name="label_colour">
-                <option value="#FFD1DC" style="background-color: #FFD1DC">Pastel Pink</option>
-                <option value="#FFB6C1" style="background-color: #FFB6C1">Light Pink</option>
-                <option value="#FFA07A" style="background-color: #FFA07A">Light Salmon</option>
-                <option value="#FFE4B5" style="background-color: #FFE4B5">Moccasin</option>
-                <option value="#FFDAB9" style="background-color: #FFDAB9">Peachpuff</option>
-                <option value="#FA8072" style="background-color: #FA8072">Salmon</option>
-                <option value="#FFD700" style="background-color: #FFD700">Gold</option>
-                <option value="#FFFACD" style="background-color: #FFFACD">Lemon Chiffon</option>
-                <option value="#F0FFF0" style="background-color: #F0FFF0">Honeydew</option>
-                <option value="#FFA07A" style="background-color: #FFA07A">Peach</option>
+                <option value="#E91E63" style="background-color: #E91E63;">Deep Pink</option>
+                <option value="#9C27B0" style="background-color: #9C27B0;">Purple</option>
+                <option value="#3F51B5" style="background-color: #3F51B5;">Indigo</option>
+                <option value="#03A9F4" style="background-color: #03A9F4;">Light Blue</option>
+                <option value="#00BCD4" style="background-color: #00BCD4;">Cyan</option>
+                <option value="#4CAF50" style="background-color: #4CAF50;">Green</option>
+                <option value="#CDDC39" style="background-color: #CDDC39;">Lime</option>
+                <option value="#FFEB3B" style="background-color: #FFEB3B;">Yellow</option>
+                <option value="#FF9800" style="background-color: #FF9800;">Orange</option>
+                <option value="#795548" style="background-color: #795548;">Brown</option>
             </select><br><br>
         <button type="submit">Submit</button>
         {{ Message }}

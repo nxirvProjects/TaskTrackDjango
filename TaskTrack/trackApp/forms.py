@@ -20,16 +20,16 @@ class SaveTaskForm(forms.Form):
 class AddLabelForm(forms.Form):
     label_name = forms.CharField(label='label name', max_length=255, required=True)
     label_colour = forms.ChoiceField(label="label colour", choices=[
-        ("#FFD1DC", "Pastel Pink"),
-        ("#FFB6C1", "Light Pink"),
-        ("#FFA07A", "Light Salmon"),
-        ("#FFE4B5", "Moccasin"),
-        ("#FFDAB9", "Peachpuff"),
-        ("#FA8072", "Salmon"),
-        ("#FFD700", "Gold"),
-        ("#FFFACD", "Lemon Chiffon"),
-        ("#F0FFF0", "Honeydew"),
-        ("#FFA07A", "Peach")])
+        ("#E91E63", "Deep Pink"),
+        ("#9C27B0", "Purple"),
+        ("#3F51B5", "Indigo"),
+        ("#03A9F4", "Light Blue"),
+        ("#00BCD4", "Cyan"),
+        ("#4CAF50", "Green"),
+        ("#CDDC39", "Lime"),
+        ("#FFEB3B", "Yellow"),
+        ("#FF9800", "Orange"),
+        ("#795548", "Brown")])
 
 
 class EditTaskForm(forms.Form):
@@ -41,16 +41,16 @@ class EditTaskForm(forms.Form):
 class EditLabelForm(forms.Form):
     label_name = forms.CharField(label='label name', max_length=255, required=True)
     label_colour = forms.ChoiceField(label="label colour", choices=[
-        ("#FFD1DC", "Pastel Pink"),
-        ("#FFB6C1", "Light Pink"),
-        ("#FFA07A", "Light Salmon"),
-        ("#FFE4B5", "Moccasin"),
-        ("#FFDAB9", "Peachpuff"),
-        ("#FA8072", "Salmon"),
-        ("#FFD700", "Gold"),
-        ("#FFFACD", "Lemon Chiffon"),
-        ("#F0FFF0", "Honeydew"),
-        ("#FFA07A", "Peach")])
+        ("#E91E63", "Deep Pink"),
+        ("#9C27B0", "Purple"),
+        ("#3F51B5", "Indigo"),
+        ("#03A9F4", "Light Blue"),
+        ("#00BCD4", "Cyan"),
+        ("#4CAF50", "Green"),
+        ("#CDDC39", "Lime"),
+        ("#FFEB3B", "Yellow"),
+        ("#FF9800", "Orange"),
+        ("#795548", "Brown")])
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -58,3 +58,18 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "email", "password1", "password2"]
+
+class UploadSyllabusForm(forms.Form):
+    label_name = forms.CharField(label='label name', max_length=255, required=True)
+    label_colour = forms.ChoiceField(label="label colour", choices=[
+        ("#E91E63", "Deep Pink"),
+        ("#9C27B0", "Purple"),
+        ("#3F51B5", "Indigo"),
+        ("#03A9F4", "Light Blue"),
+        ("#00BCD4", "Cyan"),
+        ("#4CAF50", "Green"),
+        ("#CDDC39", "Lime"),
+        ("#FFEB3B", "Yellow"),
+        ("#FF9800", "Orange"),
+        ("#795548", "Brown")])
+    syllabus_file = forms.FileField()

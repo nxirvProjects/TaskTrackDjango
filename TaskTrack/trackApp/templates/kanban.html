@@ -8,8 +8,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
     <style>
+        .custom-checkbox {
+            position: relative;
+            cursor: pointer;
+            padding-left: 35px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 5px;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .custom-checkbox .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid #000000;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
         .container2 {
-            width: 250px;
+            width: 550px;
             background-color: #ffffff; /* White sidebar */
             padding: 20px;
             border-radius: 10px;
@@ -17,8 +60,9 @@
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
-            left: 300px;
+            left: 350px;
             height: 75vh;
+            overflow-y: auto; /* Makes overflow content scrollable */
         }
         h1 {
             text-align: center;
@@ -114,33 +158,85 @@
             right: 10px;
             cursor: pointer;
         }
+
+        .action-button {
+            padding: 5px 15px;
+            margin-left: 10px; /* Adjust space between buttons as needed */
+            text-decoration: none;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .task-checkbox {
+            margin-right: 10px; /* Adds space between checkbox and task name */
+        }
+
+        .task-name {
+            flex-grow: 1;
+            margin-right: 10px; /* Adds space between task name and buttons */
+        }
+
+        .delete-button {
+            background-color: #ff4d4d; /* Adjust to match the exact red color from the Labels section */
+        }
+
+        .edit-button {
+            background-color: #4da6ff; /* Adjust to match the exact blue color from the Labels section */
+        }
+
+        /* Ensure buttons are vertically centered with the text */
+        .action-button, .task-name, .task-checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hover effects for buttons */
+        .action-button:hover {
+            opacity: 0.85; /* Or you can lighten/darken the background color */
+        }
     </style>
 </head>
 <body>
     <div class="container2">
-    <h2>Tasks</h2>
-    <hr style="height:2px;border-width:0;color:gray;background-color: #d3d3d3">
-    <form action="/{{label_id}}/kanban/" method="POST" id="save-form">
+        <h2>All Tasks</h2>
+        <hr style="height:2px;border-width:0;color:gray;background-color: #d3d3d3">
+        <form action="/{{label_id}}/kanban/" method="POST" id="save-form">
             {% csrf_token %}
             <ul>
                 {% for task in tasks %}
-                <li>
-                    {% if task.task_status %}
-                    <input type="checkbox" class="checkbox" name="task_status" value="{{task.id}}" checked>
-                    {% else %}
-                    <input type="checkbox" class="checkbox" name="task_status" value="{{task.id}}">
-                    {% endif %}
-                    <div class="circle" style="background-color: {{ task.task_label }}; cursor: pointer;" onclick='showDescription("{{ task.task_description }}", "{{ task.task_name }}")'></div>
-                    <!-- Add onclick event to show description -->
+                <li class="task-item">
+                    <label class="custom-checkbox">
+                        {% if task.task_status %}
+                        <input type="checkbox" class="task-checkbox" name="task_status" value="{{task.id}}" checked>
+                        {% else %}
+                        <input type="checkbox" class="task-checkbox" name="task_status" value="{{task.id}}">
+                        {% endif %}
+                        <span class="checkmark"></span>
+                    </label>
+                    <div class="circle task-label" style="background-color: {{ task.task_label }};"></div>
                     <span class="task-name" onclick='showDescription("{{ task.task_description }}", "{{ task.task_name }}")' style="cursor: pointer;">{{ task.task_name }}</span>
-                    <a href="/delete_task/{{ task.id }}">Delete</a>
-                    <a href="/edit_task/{{ task.id }}">Edit</a>
+                    <a href="/delete_task_kanban/{{ label_id }}/{{ task.id }}" class="action-button delete-button">Delete</a>
+                    <a href="/edit_task/{{ task.id }}" class="action-button edit-button">Edit</a>
                 </li>
                 {% endfor %}
             </ul>
             <button type="submit" class="save-button">Save</button>
         </form>
-</div>
+    </div>
 
     <div class="edit-form">
         <h2 id="title"></h2>
