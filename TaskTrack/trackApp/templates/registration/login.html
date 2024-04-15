@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
+
     <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,6 +45,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="form-container">
+            <img src="{% static '/images/img-crop.png' %}" alt="Logo" style="width: 150px; margin-left: 167px;">
                 <h2>Login</h2>
                 <form method="post" class="form-group">
                     {% csrf_token %}

@@ -72,20 +72,20 @@
         <form method="post">
             {% csrf_token %}
             <label for="task_name">Task Name*:</label>
-            <input type="text" id="task_name" name="task_name">
+            <input type="text" id="task_name" name="task_name" required>
             
             <label for="task_description">Task Description:</label>
             <textarea id="task_description" name="task_description"></textarea>
             
             <label for="task_label">Task Label*:</label>
-            <select id="task_label" name="task_label">
+            <select id="task_label" name="task_label" required>
                 {% for label in labels %}
                 <option value="{{ label.id }}">{{ label.label_name }}</option>
                 {% endfor %}
             </select>
             
             <label for="deadline">Deadline*:</label>
-            <input type="datetime-local" id="deadline" name="task_deadline">
+            <input type="datetime-local" id="deadline" name="task_deadline" required>
             
             <input type="submit" value="Submit">
             {{ Message }}

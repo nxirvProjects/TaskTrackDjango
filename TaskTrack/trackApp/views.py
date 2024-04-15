@@ -8,9 +8,10 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 import icalendar
 import datetime
-from datetime import datetime
+#from datetime import datetime
 from django.utils import timezone
 import pytz
+
 
 # Create your views here.
 def register(response):
@@ -65,8 +66,8 @@ def home(response):
     for task in list_tasks:
         # Check if the task's deadline is today
         task_deadline_date = task["deadline"].date() if task["deadline"] else None
-
-        if task_deadline_date == today:
+        print(today + datetime.timedelta(days=3))
+        if task_deadline_date <= today + datetime.timedelta(days=3):
             # Add the task to the formatted tasks list
             formatted_tasks.append([task["task_name"], task["task_status"], task["deadline"]])
 
@@ -138,7 +139,11 @@ def kanban(response, label_name):
             if i["task_label_id"] == int(label_name):
                 tasks.append(i)
 
-        return render(response, "kanban.html", {"tasks": tasks, "label_id": label_name})
+        label = Label.objects.filter(id=label_name).values()
+        print(label)
+        name = label.label_name
+
+        return render(response, "kanban.html", {"tasks": tasks, "label_id": label_name, "name": name})
 
     else:
         # If the request method is not POST, fetch all tasks from the database
@@ -147,7 +152,11 @@ def kanban(response, label_name):
         for i in all_tasks:
             if i["task_label_id"] == int(label_name):
                 tasks.append(i)
-        return render(response, "kanban.html", {"tasks": tasks, "label_id": label_name})
+
+        label = Label.objects.filter(id=label_name).values()
+        lab = [l for l in label]
+        name = lab[0]["label_name"]
+        return render(response, "kanban.html", {"tasks": tasks, "label_id": label_name, "name": name})
 
 @login_required(redirect_field_name="/accounts/login/")
 def view_all_tasks(response):

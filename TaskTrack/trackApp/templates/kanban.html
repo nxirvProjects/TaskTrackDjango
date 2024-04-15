@@ -212,7 +212,7 @@
 </head>
 <body>
     <div class="container2">
-        <h2>All Tasks</h2>
+        <h2>Tasks For {{name}}</h2>
         <hr style="height:2px;border-width:0;color:gray;background-color: #d3d3d3">
         <form action="/{{label_id}}/kanban/" method="POST" id="save-form">
             {% csrf_token %}
