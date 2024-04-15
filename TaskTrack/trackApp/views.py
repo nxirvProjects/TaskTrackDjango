@@ -9,6 +9,8 @@ from django.contrib.auth import update_session_auth_hash
 import icalendar
 import datetime
 from datetime import datetime
+from django.utils import timezone
+import pytz
 
 # Create your views here.
 def register(response):
@@ -24,6 +26,10 @@ def register(response):
 
 @login_required(redirect_field_name="/accounts/login/")
 def home(response):
+    user_timezone = pytz.timezone("America/Chicago")
+    
+    # Activate the user's time zone
+    timezone.activate(user_timezone)
     all_tasks = Task.objects.filter(user=response.user).values()
     list_tasks = [task for task in all_tasks]
     today = timezone.localdate()
@@ -55,10 +61,13 @@ def home(response):
         return response
 
 
+    print(list_tasks)
     formatted_tasks = []
     for task in list_tasks:
         # Check if the task's deadline is today
         task_deadline_date = task["deadline"].date() if task["deadline"] else None
+        print(task_deadline_date)
+        print(today)
         if task_deadline_date == today:
             # Add the task to the formatted tasks list
             formatted_tasks.append([task["task_name"], task["task_status"], task["deadline"]])
@@ -172,8 +181,10 @@ def view_all_tasks(response):
         return render(response, "all_tasks.html", {"tasks": tasks})
 
 
+
 @login_required(redirect_field_name="/accounts/login/")
 def add_task(response):
+    timezone.activate('America/Chicago')
 
     all_labels = Label.objects.filter(user=response.user).values()
     labels = []
@@ -226,6 +237,7 @@ def delete_task_kanban(response, task_name, label_name):
 
 @login_required(redirect_field_name="/accounts/login/")
 def edit_task(response, task_name):
+    timezone.activate('America/Chicago')
     if response.method == 'POST':
         form = EditTaskForm(response.POST)  # Bind POST data to the form
         if form.is_valid():
