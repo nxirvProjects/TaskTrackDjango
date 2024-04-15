@@ -67,7 +67,7 @@ This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE
   - [GitHub](https://github.com/nxirvProjects)
 
 - **Vanesa Viayra**
-  - [LinkedIn](linkedin.com/in/vanesa-viayra/)
+  - [LinkedIn](https://www.linkedin.com/in/vanesa-viayra/)
   - [GitHub](https://github.com/vanesavi)
 
 - **Sree Bommisetty**
@@ -75,5 +75,5 @@ This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE
   - [GitHub](https://github.com/person3)
 
 - **Kashvi Asokan**
-  - [LinkedIn]( https://www.linkedin.com/in/kashvi-asokan/)
+  - [LinkedIn](https://www.linkedin.com/in/kashvi-asokan/)
   - [GitHub](https://github.com/eisedial)
