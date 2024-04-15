@@ -35,11 +35,16 @@ Before you begin, ensure you have Python installed on your computer. If not, you
 
 ## Database Setup
 
-1. Make migrations:
+1. Navigate to Directory:
     ```bash
     python manage.py makemigrations
     ```
-2. Migrate Models:
+    
+2. Make migrations:
+    ```bash
+    python manage.py makemigrations
+    ```
+3. Migrate Models:
     ```bash
     python manage.py migrate
     ```
