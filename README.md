@@ -30,7 +30,7 @@ Before you begin, ensure you have Python installed on your computer. If not, you
         ```
 5. Install dependencies:
     ```bash
-    pip install -r requirements.txt
+    python -m pip install -r requirements.txt
     ```
 
 ## Database Setup
